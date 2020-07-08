@@ -1,0 +1,18 @@
+﻿@page "/signalrtest"
+@inherits SignalRTesterBase
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+<ul class="list-group">
+
+    @foreach (var message in messages)
+    {
+        <li class="list-group-item">
+            @message
+        </li>
+    }
+</ul>
+<div class="form-group">
+    <label>Type a message</label>
+    <input type="text" class="form-control" @bind="messageinput" />
+</div>
+
+<button class="btn btn-primary" @onclick="SendMessage">Send</button>

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Example.Server.Data;
 using Example.Server.Models;
+using Example.Server.Hubs;
 
 namespace Example.Server
 {
@@ -29,9 +30,11 @@ namespace Example.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSignalR();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -95,6 +98,8 @@ namespace Example.Server
                 endpoints.MapRazorPages();
                 endpoints.MapControllers()
                     .RequireAuthorization();
+                endpoints.MapHub<MessageHub>("/message");
+
                 endpoints.MapFallbackToFile("index.html");
             });
         }
